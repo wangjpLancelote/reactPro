@@ -1,0 +1,44 @@
+video::-webkit-media-controls{
+  display:none !important;
+}
+.wrap h3{
+  text-align: center;
+  height: 100px;
+  line-height: 100px;
+}
+.control{
+  position: absolute;
+  background: rgba(255,255,0,0.3);
+  width: 680px;
+  height: 40px;
+  border-radius: 5px;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+}
+.control div{
+  display: inline-block;
+  line-height: 40px;
+  margin-left: 10px;
+  font-size: 18px;
+  color: #fff;
+}
+.control .play_pause,.control .expand{
+  color: rgb(255,255,0);
+}
+.control div:nth-child(2){
+  width: 460px;
+  height: 10px;
+  background-color: rgba(255,255,255,0.3);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.control .progress{
+  display: block;
+  width: 10%;
+  height: 10px;
+  background: #fff;
+}
+.control .timer{
+  font-size: 12px;
+}
