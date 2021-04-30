@@ -1,6 +1,6 @@
 import React, {useRef, useEffect, useState, useCallback} from "react";
 import styled from 'styled-components'
-import { Button, Image, Tag } from 'antd';
+import { Image, Tag } from 'antd';
 import './videoFrame.less';
 
 const VideoDebugs = styled.div`
@@ -82,13 +82,14 @@ function VideoFrame (props) {
         videoRef.current.removeEventListener('seeked', () => {
             console.log('seeked event has removed');
         });
-        const video = document.createElement('video');
-        video.currentTime = videoRef.current.currentTime;
-        video.volume = videoRef.current.volume;
-        video.autoplay = true
-        video.muted = true // most browsers block autoplay unless muted
-        video.src = videoRef.current.src;
-        video.setAttribute('crossOrigin', 'anonymous');
+        // const video = document.createElement('video');
+        // video.currentTime = videoRef.current.currentTime;
+        // video.volume = videoRef.current.volume;
+        // video.autoplay = true
+        // video.muted = true // most browsers block autoplay unless muted
+        // video.src = videoRef.current.src;
+        // video.setAttribute('crossOrigin', 'anonymous');
+        
         const { image, width, height, currentTime } = generateCanvas(videoRef.current);
         videoRef.current.pause();
         const base64Path = window.URL.createObjectURL(new Blob([image]));
@@ -115,15 +116,10 @@ function VideoFrame (props) {
         }
     }
 
-    const handleTimeUpdate = (e) => {
-        // console.log('--->>', e);
-    }
-
     return (
         <VideoDebugs>
-            <Button onClick={() => playVideo() }>播放/暂停</Button>
             <div className="debugContainer" ref={containerRef}>
-                <video ref={videoRef} width="100%" className="player" height="100%" src={require('./test.mp4').default} muted={true} controls crossOrigin="anonymous" onTimeUpdate={handleTimeUpdate}/>
+                <video ref={videoRef} width="100%" className="player" height="100%" src={require('./test.mp4').default} muted={true} controls crossOrigin="anonymous"/>
                 <div className="control">
                     <div className="fa fa-play play_pause"></div>
                     <div>
