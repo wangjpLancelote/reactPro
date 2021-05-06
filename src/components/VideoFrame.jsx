@@ -37,6 +37,8 @@ function VideoFrame (props) {
     const frameControlRef = useRef(null);
     const [rate, setRate] = useState(0);
     const format = props.format || 'png';
+    const [node, setNode] = useState({});
+    const nodeRef = useRef(null);
     
     const [images, setImages] = useState({});
 
@@ -61,7 +63,7 @@ function VideoFrame (props) {
         return frameControlRef.current.removeEventListener('mousemove', () => {
             console.log('event mousemove has removed')
         })
-    }, []);
+    }, [rate]);
 
     const uniq = (arr) => {
         return Array.from(new Set(arr));
@@ -75,33 +77,32 @@ function VideoFrame (props) {
         const { image, width, height, currentTime } = generateCanvas(videoRef.current);
         videoRef.current.pause();
         const base64Path = window.URL.createObjectURL(new Blob([image]));
-        setImages((prev) => {
-            if (!~prev.map(v => v.url).indexOf(base64Path)) {
-                prev = [...prev, { url: base64Path, time: currentTime, width: width, height: height }]
-            }
-            return prev;
-        });        
+        // setImages((prev) => {
+        //     if (!~prev.map(v => v.url).indexOf(base64Path)) {
+        //         prev = [...prev, { url: base64Path, time: currentTime, width: width, height: height }]
+        //     }
+        //     return prev;
+        // });        
+        setImages({ url: base64Path, time: currentTime, width: width, height: height });
     }
 
     const generateFrame = (frameRate) => {
         const { image, width, height, currentTime } = generateCanvas(videoRef.current, videoRef.current.duration * frameRate);
         const base64Path = window.URL.createObjectURL(new Blob([image]));
-        setImages((prev) => {
-            if (prev.url !== base64Path) {
-                prev = { url: base64Path, time: currentTime, width: width, height: height };
-            }
-            return prev;
-        });
+        setImages({ url: base64Path, time: currentTime, width: width, height: height });
     }
 
     const generateCanvas = (video, frameTime) => {
-        console.log('vide', video);
-        video.originCurrentTime = video.currentTime;
-        if (frameTime) video.currentTime = frameTime;
+        if (!nodeRef.current) {
+            let cloneNode = video.cloneNode(true);
+            nodeRef.current = cloneNode;
+            setNode(cloneNode);
+        }
+        nodeRef.current.currentTime = frameTime;
         const canvas = document.createElement('canvas')
         const width = canvas.width = videoRef.current.videoWidth;
         const height = canvas.height = videoRef.current.videoHeight;
-        canvas.getContext('2d').drawImage(video, 0, 0);
+        canvas.getContext('2d').drawImage(nodeRef.current, 0, 0);
         const dataURI = canvas.toDataURL('image/' + format);
         const data = dataURI.split(',')[1];
         return {
