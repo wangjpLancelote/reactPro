@@ -59,7 +59,7 @@ function VideoFrame (props) {
             const frameRate = indexTabOffsetX / indexTabWidth;
             setRate(frameRate);
             generateFrame(frameRate.toFixed(3));
-    }, 300));
+    }, 100));
         return frameControlRef.current.removeEventListener('mousemove', () => {
             console.log('event mousemove has removed')
         })
@@ -124,7 +124,7 @@ function VideoFrame (props) {
     )
 
     return (
-        <VideoDebugs>
+        <VideoDebugs videoWidth={props.videoWidth} videoHeight={props.videoHeight}>
             <div className="debugContainer" ref={containerRef}>
                 <video ref={videoRef} className="player" src={src ? src : require('./test.mp4').default} muted={true} controls crossOrigin="anonymous"/>
                 <Popover content={popoverCard} placement="top">

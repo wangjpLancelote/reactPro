@@ -3,7 +3,7 @@
 import VideoFrame from './components/VideoFrame';
 function App() {
   return (
-    <VideoFrame>
+    <VideoFrame videoHeight={'500'} videoWidth={'1000'}>
       <p>111</p>
     </VideoFrame>
   );
